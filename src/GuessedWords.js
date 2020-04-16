@@ -8,8 +8,8 @@ function GuessedWords({ guessedWords }) {
     ) : (
       <Fragment>
         <h3>Guessed Words</h3>
-        <table data-test="table">
-          <thead>
+        <table data-test="table" className="table table-sm">
+          <thead className="thead-light">
             <tr>
               <th>Guess</th>
               <th>Matching letters</th>
@@ -19,7 +19,7 @@ function GuessedWords({ guessedWords }) {
             {guessedWords.map(item => (
               <tr data-test="guessed-word-item" key={item.guessedWord}>
                 <td>{item.guessedWord}</td>
-                <td>{item.lettes}</td>
+                <td>{item.letters}</td>
               </tr>
             ))}
           </tbody>
