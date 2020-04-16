@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 
 function GuessedWords({ guessedWords }) {
-  let content =
+  const content =
     guessedWords.length === 0 ? (
       <span data-test="instructions">Try to guess the secret word!</span>
     ) : (
