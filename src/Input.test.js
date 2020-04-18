@@ -22,3 +22,18 @@ test('does not throw warning with expected type of props', () => {
   );
   expect(propError).toBeUndefined();
 });
+
+describe('state controlled input field', () => {
+  test('state updates with value of input box', () => {
+    const mockSetCurrentGuess = jest.fn();
+    React.useState = jest.fn(() => ['', mockSetCurrentGuess]);
+
+    const wrapper = shallow(<Input secretWord={secretWord} />);
+    const inputBox = wrapper.find('[data-test="input-box"]');
+
+    const mockEvent = { target: { value: 'train' } };
+    inputBox.simulate('change', mockEvent);
+
+    expect(mockSetCurrentGuess).toHaveBeenCalledWith('train');
+  });
+});
