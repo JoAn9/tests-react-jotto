@@ -18,6 +18,7 @@ function Input({ secretWord }) {
           data-test="submit-button"
           onClick={e => {
             e.preventDefault();
+            setCurrentGuess('');
           }}
           className="btn btn-primary mb-2"
         >
