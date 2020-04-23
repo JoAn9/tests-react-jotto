@@ -23,4 +23,14 @@ describe('getSecretWord calls', () => {
     setup();
     expect(mockGetSecretWord).toHaveBeenCalled();
   });
+
+  test('secretWord is not updated after every render', () => {
+    const wrapper = setup();
+    mockGetSecretWord.mockClear();
+
+    // wrapper.update(); (issue; not working)
+    wrapper.setProps();
+
+    expect(mockGetSecretWord).not.toHaveBeenCalled();
+  });
 });
