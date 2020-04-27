@@ -8,22 +8,40 @@ const strings = {
   polish: {},
 };
 
-test('returns correct submit string for english', () => {
-  const string = getStringByLanguage('en', 'submit', strings);
-  expect(string).toBe('submit');
-});
+describe('language sring testing', () => {
+  const mockWarn = jest.fn();
+  let originalWarn;
 
-test('returns correct submit string for emoji', () => {
-  const string = getStringByLanguage('emoji', 'submit', strings);
-  expect(string).toBe('🚀');
-});
+  beforeEach(() => {
+    originalWarn = console.warn;
+    console.warn = mockWarn;
+  });
 
-test('returns english submit string when language does not exist', () => {
-  const string = getStringByLanguage('chinese', 'submit', strings);
-  expect(string).toBe('submit');
-});
+  afterEach(() => {
+    console.warn = originalWarn;
+  });
 
-test('returns english submit string when submit key does not exist for language', () => {
-  const string = getStringByLanguage('polish', 'submit', strings);
-  expect(string).toBe('submit');
+  test('returns correct submit string for english', () => {
+    const string = getStringByLanguage('en', 'submit', strings);
+    expect(string).toBe('submit');
+    expect(mockWarn).not.toHaveBeenCalled();
+  });
+
+  test('returns correct submit string for emoji', () => {
+    const string = getStringByLanguage('emoji', 'submit', strings);
+    expect(string).toBe('🚀');
+    expect(mockWarn).not.toHaveBeenCalled();
+  });
+
+  test('returns english submit string when language does not exist', () => {
+    const string = getStringByLanguage('chinese', 'submit', strings);
+    expect(string).toBe('submit');
+    expect(mockWarn).toHaveBeenCalledWith('No string for [submit] for chinese');
+  });
+
+  test('returns english submit string when submit key does not exist for language', () => {
+    const string = getStringByLanguage('polish', 'submit', strings);
+    expect(string).toBe('submit');
+    expect(mockWarn).toHaveBeenCalledWith('No string for [submit] for polish');
+  });
 });
