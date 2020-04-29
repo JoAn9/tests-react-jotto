@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import checkPropTypes from 'check-prop-types';
+import { checkProps } from './test/testUtils';
 import GuessedWords from './GuessedWords';
 
 const defaultProps = {
@@ -13,12 +13,7 @@ const defaultProps = {
 };
 
 test('does not throw a warning with expected props', () => {
-  const propError = checkPropTypes(
-    GuessedWords.propTypes,
-    defaultProps,
-    'prop',
-    GuessedWords.name
-  );
+  const propError = checkProps(GuessedWords, defaultProps);
   expect(propError).toBeUndefined();
 });
 

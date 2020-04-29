@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import checkPropTypes from 'check-prop-types';
+import { checkProps } from './test/testUtils';
 
 import Input from './Input';
 
@@ -14,12 +14,7 @@ test('Input renders without error', () => {
 
 test('does not throw warning with expected type of props', () => {
   const expectedProps = { secretWord };
-  const propError = checkPropTypes(
-    Input.propTypes,
-    expectedProps,
-    'prop',
-    Input.name
-  );
+  const propError = checkProps(Input, expectedProps);
   expect(propError).toBeUndefined();
 });
 
