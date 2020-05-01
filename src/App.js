@@ -28,7 +28,7 @@ function App() {
     dispatch({ type: 'setSecretWord', payload: secretWord });
 
   const setLanguage = language =>
-    dispatch({ type: 'setLanguage', action: language });
+    dispatch({ type: 'setLanguage', payload: language });
 
   React.useEffect(() => {
     hookActions.getSecretWord(setSecretWord);
