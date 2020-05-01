@@ -1,7 +1,30 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 import { checkProps } from './test/testUtils';
 import Congrats from './Congrats';
+import languageContext from './contexts/languageContext';
+
+const setup = ({ success, language }) => {
+  language = language || 'en';
+  success = success || false;
+  return mount(
+    <languageContext.Provider value={language}>
+      <Congrats success={success} />
+    </languageContext.Provider>
+  );
+};
+
+describe('languagePicker', () => {
+  test('correctly renders congrats string in english', () => {
+    const wrapper = setup({ success: true });
+    expect(wrapper.text()).toBe('Congratulations! You guessed the word!');
+  });
+
+  test('correctly renders congrats string in emoji', () => {
+    const wrapper = setup({ success: true, language: 'emoji' });
+    expect(wrapper.text()).toBe('🎯🎉');
+  });
+});
 
 test('renders without error', () => {
   const wrapper = shallow(<Congrats success={false} />);
