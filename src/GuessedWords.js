@@ -1,18 +1,32 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
+import stringsModule from './helpers/strings';
+import languageContext from './contexts/languageContext';
 
 function GuessedWords({ guessedWords }) {
+  const language = React.useContext(languageContext);
   const content =
     guessedWords.length === 0 ? (
-      <span data-test="instructions">Try to guess the secret word!</span>
+      <span data-test="instructions">
+        {stringsModule.getStringByLanguage(language, 'guessPrompt')}
+      </span>
     ) : (
       <Fragment>
-        <h3>Guessed Words</h3>
+        <h3>
+          {stringsModule.getStringByLanguage(language, 'guessColumnHeader')}
+        </h3>
         <table data-test="table" className="table table-sm">
           <thead className="thead-light">
             <tr>
-              <th>Guess</th>
-              <th>Matching letters</th>
+              <th>
+                {stringsModule.getStringByLanguage(language, 'guessedWords')}
+              </th>
+              <th>
+                {stringsModule.getStringByLanguage(
+                  language,
+                  'matchingLettersColumnHeader'
+                )}
+              </th>
             </tr>
           </thead>
           <tbody>
