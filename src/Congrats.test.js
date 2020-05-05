@@ -1,15 +1,17 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
-import { checkProps } from './test/testUtils';
 import Congrats from './Congrats';
 import languageContext from './contexts/languageContext';
+import successContext from './contexts/successContext';
 
 const setup = ({ success, language }) => {
   language = language || 'en';
   success = success || false;
   return mount(
     <languageContext.Provider value={language}>
-      <Congrats success={success} />
+      <successContext.SuccessProvider value={[success, jest.fn()]}>
+        <Congrats />
+      </successContext.SuccessProvider>
     </languageContext.Provider>
   );
 };
@@ -27,26 +29,20 @@ describe('languagePicker', () => {
 });
 
 test('renders without error', () => {
-  const wrapper = shallow(<Congrats success={false} />);
+  const wrapper = setup({});
   const component = wrapper.find('[data-test="component-congrats"]');
   expect(component.length).toBe(1);
 });
 
-test('renders no text when `success` props is false', () => {
-  const wrapper = shallow(<Congrats success={false} />);
+test('renders no text when `success` is false', () => {
+  const wrapper = setup({ success: false });
   const component = wrapper.find('[data-test="component-congrats"]');
   // expect(component.length).toBe(0);
   expect(component.text()).toBe('');
 });
 
-test('render some message when `success` props is true', () => {
-  const wrapper = shallow(<Congrats success={true} />);
+test('render some message when `success` is true', () => {
+  const wrapper = setup({ success: true });
   const message = wrapper.find('[data-test="message"]');
   expect(message.text().length).not.toBe(0);
-});
-
-test("doesn't throw warning when expected type of props", () => {
-  const expectedProps = { success: true };
-  const propError = checkProps(Congrats, expectedProps);
-  expect(propError).toBeUndefined();
 });
