@@ -7,6 +7,7 @@ import Congrats from './Congrats';
 import GuessedWords from './GuessedWords';
 import languageContext from './contexts/languageContext';
 import successContext from './contexts/successContext';
+import guessedWordsContext from './contexts/guessedWordsContext';
 
 const initialState = {
   secretWord: null,
@@ -54,11 +55,13 @@ function App() {
       <h1>Jotto</h1>
       <languageContext.Provider value={language}>
         <LanguagePicker setLanguage={setLanguage} />
-        <successContext.SuccessProvider>
-          <Congrats />
-          <Input secretWord={secretWord} />
-        </successContext.SuccessProvider>
-        {/* <GuessedWords /> */}
+        <guessedWordsContext.GuessedWordsProvider>
+          <successContext.SuccessProvider>
+            <Congrats />
+            <Input secretWord={secretWord} />
+          </successContext.SuccessProvider>
+          <GuessedWords />
+        </guessedWordsContext.GuessedWordsProvider>
       </languageContext.Provider>
     </div>
   );

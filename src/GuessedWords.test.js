@@ -1,26 +1,20 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import { checkProps } from './test/testUtils';
 import GuessedWords from './GuessedWords';
+import guessedWordsContext from './contexts/guessedWordsContext';
 
-const defaultProps = {
-  guessedWords: [
-    {
-      guessedWord: 'hophop',
-      letters: 2,
-    },
-  ],
+const setup = (guessedWords = []) => {
+  const mockUseGuessedWords = jest
+    .fn()
+    .mockReturnValue([guessedWords, jest.fn()]);
+  guessedWordsContext.useGuessedWords = mockUseGuessedWords;
+  return shallow(<GuessedWords />);
 };
-
-test('does not throw a warning with expected props', () => {
-  const propError = checkProps(GuessedWords, defaultProps);
-  expect(propError).toBeUndefined();
-});
 
 describe('if there are no guessed words', () => {
   let wrapper;
   beforeEach(() => {
-    wrapper = shallow(<GuessedWords guessedWords={[]} />);
+    wrapper = setup([]);
   });
 
   test('renders component without error', () => {
@@ -43,7 +37,7 @@ describe('if there are guessed words', () => {
   ];
 
   beforeEach(() => {
-    wrapper = shallow(<GuessedWords guessedWords={guessedWords} />);
+    wrapper = setup(guessedWords);
   });
 
   test('renders without error', () => {
@@ -62,7 +56,7 @@ describe('if there are guessed words', () => {
 
 describe('languagePicker in instruction', () => {
   test('correctly renders instructions in english by default', () => {
-    const wrapper = shallow(<GuessedWords guessedWords={[]} />);
+    const wrapper = setup([]);
     const instructions = wrapper.find('[data-test="instructions"]');
     expect(instructions.text()).toBe('Try to guess the secret word!');
   });
@@ -70,7 +64,7 @@ describe('languagePicker in instruction', () => {
   test('correctly renders instructions in emoji', () => {
     const mockUseContext = jest.fn().mockReturnValue('emoji');
     React.useContext = mockUseContext;
-    const wrapper = shallow(<GuessedWords guessedWords={[]} />);
+    const wrapper = setup([]);
     const instructions = wrapper.find('[data-test="instructions"]');
     expect(instructions.text()).toBe('🤔🤫🔤');
   });
