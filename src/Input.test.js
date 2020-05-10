@@ -1,17 +1,21 @@
 import React from 'react';
-import { shallow, mount } from 'enzyme';
+import { mount } from 'enzyme';
 import { checkProps } from './test/testUtils';
 import Input from './Input';
 import languageContext from './contexts/languageContext';
+import successContext from './contexts/successContext';
 
 const secretWord = ' party';
 
-const setup = ({ secretWord, language }) => {
+const setup = ({ secretWord, language, success }) => {
   language = language || 'en';
   secretWord = secretWord || 'party';
+  success = success || false;
   return mount(
     <languageContext.Provider value={language}>
-      <Input secretWord={secretWord} />
+      <successContext.SuccessProvider value={[success, jest.fn()]}>
+        <Input secretWord={secretWord} />
+      </successContext.SuccessProvider>
     </languageContext.Provider>
   );
 };
@@ -30,7 +34,7 @@ describe('languagePicker for input', () => {
 });
 
 test('Input renders without error', () => {
-  const wrapper = shallow(<Input secretWord={secretWord} />);
+  const wrapper = setup({});
   const input = wrapper.find('[data-test="component-input"]');
   expect(input.length).toBe(1);
 });
@@ -48,7 +52,7 @@ describe('state controlled input field', () => {
   beforeEach(() => {
     mockSetCurrentGuess.mockClear();
     React.useState = jest.fn(() => ['', mockSetCurrentGuess]);
-    wrapper = shallow(<Input secretWord={secretWord} />);
+    wrapper = setup({});
   });
 
   test('state updates with value of input box', () => {
@@ -65,4 +69,9 @@ describe('state controlled input field', () => {
 
     expect(mockSetCurrentGuess).toHaveBeenCalledWith('');
   });
+});
+
+test('input does not render when success is true', () => {
+  const wrapper = setup({ success: true });
+  expect(wrapper.isEmptyRender()).toBe(true);
 });
