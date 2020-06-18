@@ -28,6 +28,7 @@ function Input({ secretWord }) {
           data-test="submit-button"
           onClick={e => {
             e.preventDefault();
+            if (currentGuess === secretWord) setSuccess(true);
             setCurrentGuess('');
           }}
           className="btn btn-primary mb-2"
