@@ -4,6 +4,7 @@ import { checkProps } from './test/testUtils';
 import Input from './Input';
 import languageContext from './contexts/languageContext';
 import successContext from './contexts/successContext';
+import guessedWordsContext from './contexts/guessedWordsContext';
 
 const secretWord = ' party';
 
@@ -13,9 +14,11 @@ const setup = ({ secretWord, language, success }) => {
   success = success || false;
   return mount(
     <languageContext.Provider value={language}>
-      <successContext.SuccessProvider value={[success, jest.fn()]}>
-        <Input secretWord={secretWord} />
-      </successContext.SuccessProvider>
+      <guessedWordsContext.GuessedWordsProvider>
+        <successContext.SuccessProvider value={[success, jest.fn()]}>
+          <Input secretWord={secretWord} />
+        </successContext.SuccessProvider>
+      </guessedWordsContext.GuessedWordsProvider>
     </languageContext.Provider>
   );
 };
